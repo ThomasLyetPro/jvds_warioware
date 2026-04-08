@@ -3,19 +3,21 @@ using UnityEngine;
 
 public abstract class MiniGame : MonoBehaviour
 {
-  private GameManager _gameManger;
-  public GameManager gameManger { set => _gameManger = value; }
+  private GameManager _gameManager;
+  public GameManager gameManager { set => _gameManager = value; }
 
   bool isBeingPlayed = false;
 
   protected void TriggerWin()
   {
     isBeingPlayed = false;
+    _gameManager.TriggerEndOfGame(GameManager.EnterIntermissionState.Win);
   }
 
-  protected void TriggerLoose()
+  public void TriggerLoose()
   {
     isBeingPlayed = false;
+    _gameManager.TriggerEndOfGame(GameManager.EnterIntermissionState.Loose);
   }
 
   private float timer = 10f;
