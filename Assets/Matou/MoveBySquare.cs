@@ -18,14 +18,15 @@ public class MoveBySquare : MonoBehaviour
 
   void OnEnable()
   {
+    Debug.Log("Press action enabled\n");
     _pressAction.Enable();
-    //m_Player.Enable();                                // Enable all actions within map.
   }
 
   void Update()
   {
     if (_pressAction.WasPerformedThisFrame())
     {
+      // the arm goes to the left or right (space was pressed)
       Debug.Log("GO GO GO\n");
       _RigidBody.linearVelocity += new Vector2(400.0f*Time.deltaTime*(float)_DirectionFactor, 0);
     }
