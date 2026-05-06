@@ -7,8 +7,10 @@ using System.Collections.Generic;
 public class MoveBySquare : MonoBehaviour
 {
   public InputAction _pressAction;
-  public int _DirectionFactor = 1; // -1 == goes to the left, 1 to the right
+  [SerializeField] int _DirectionFactor = 1; // -1 == goes to the left, 1 to the right
   private Rigidbody2D _RigidBody = null;
+
+  private bool _IsMovingStarted = false;
   
   // Start is called once before the first execution of Update after the MonoBehaviour is created
   void Start()
@@ -24,11 +26,11 @@ public class MoveBySquare : MonoBehaviour
 
   void Update()
   {
-    if (_pressAction.WasPerformedThisFrame())
+    if (_IsMovingStarted || _pressAction.WasPerformedThisFrame())
     {
       // the arm goes to the left or right (space was pressed)
-      Debug.Log("GO GO GO\n");
-      _RigidBody.linearVelocity += new Vector2(400.0f*Time.deltaTime*(float)_DirectionFactor, 0);
+      _RigidBody.linearVelocity = new Vector2(5.0f*(float)_DirectionFactor, 0);
+      _IsMovingStarted = true;
     }
   }
 }
