@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
   MiniGame[] miniGames;
   [SerializeField] Slider timeSlider;
   [SerializeField] TMP_Text remainingLife;
+  [SerializeField] StartPanel startPanel;
+  [SerializeField] IntergamePanel intergamePanel;
+  [SerializeField] GameOverPanel gameOverPanel;
+
 
   // Start is called once before the first execution of Update after the MonoBehaviour is created
   void Start()
@@ -27,13 +31,15 @@ public class GameManager : MonoBehaviour
 
   IEnumerator StartGame()
   {
+    startPanel.Begin();
     yield return new WaitForSeconds(2f);
-    StartCoroutine(TriggerIntermission(EnterIntermissionState.StartGame));
+    startPanel.End();
+    StartCoroutine(TriggerIntergame(EnterIntergameState.StartGame));
   }
 
-  public enum EnterIntermissionState { StartGame, Win, Loose }
+  public enum EnterIntergameState { StartGame, Win, Loose }
   int currentLife = 3;
-  public IEnumerator TriggerIntermission(EnterIntermissionState state)
+  public IEnumerator TriggerIntergame(EnterIntergameState state)
   {
     if (currentMinigame)
     {
@@ -42,7 +48,7 @@ public class GameManager : MonoBehaviour
     }
     timeSlider.gameObject.SetActive(false);
 
-    if (state == EnterIntermissionState.Loose)
+    if (state == EnterIntergameState.Loose)
     {
       currentLife--;
       remainingLife.text = "Life: " + currentLife;
@@ -50,25 +56,25 @@ public class GameManager : MonoBehaviour
 
     if (currentLife <= 0)
     {
-      yield return TriggerEndgame();
+      TriggerEndgame();
     }
     else
     {
+      intergamePanel.Begin();
       yield return new WaitForSeconds(2f);
-      StartCoroutine(TriggerMinigame());
+      intergamePanel.End();
+      TriggerMinigame();
     }
   }
 
-  public void TriggerEndOfGame(EnterIntermissionState state)
+  public void TriggerEndOfMiniGame(EnterIntergameState state)
   {
-    StartCoroutine(TriggerIntermission(state));
+    StartCoroutine(TriggerIntergame(state));
   }
 
   MiniGame currentMinigame;
-  IEnumerator TriggerMinigame()
+  void TriggerMinigame()
   {
-    yield return new WaitForSeconds(0f);
-
     timeSlider.gameObject.SetActive(true);
     timeSlider.value = 1f;
 
@@ -77,10 +83,9 @@ public class GameManager : MonoBehaviour
     currentMinigame.StartMiniGame();
   }
 
-  IEnumerator TriggerEndgame()
+  void TriggerEndgame()
   {
-    yield return new WaitForSeconds(0f);
-    Debug.Log("ENDGAME");
+    gameOverPanel.Begin();
   }
 
   private void Update()

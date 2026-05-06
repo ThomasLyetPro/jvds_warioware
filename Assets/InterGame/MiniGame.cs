@@ -11,16 +11,16 @@ public abstract class MiniGame : MonoBehaviour
   protected void TriggerWin()
   {
     isBeingPlayed = false;
-    _gameManager.TriggerEndOfGame(GameManager.EnterIntermissionState.Win);
+    _gameManager.TriggerEndOfMiniGame(GameManager.EnterIntergameState.Win);
   }
 
   public void TriggerLoose()
   {
     isBeingPlayed = false;
-    _gameManager.TriggerEndOfGame(GameManager.EnterIntermissionState.Loose);
+    _gameManager.TriggerEndOfMiniGame(GameManager.EnterIntergameState.Loose);
   }
 
-  private float timer = 10f;
+  private float timer = 8f;
   private float currentTimer = 0f;
   private void Update()
   {
